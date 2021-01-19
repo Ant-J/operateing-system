@@ -1,0 +1,3 @@
+What is a “routine”? A routine is an individual method or procedure invocable for a single purpose. Examples include a function in C++, a method in Java,a function or sub procedure in Microsoft Visual Basic. For some uses, macros in C andC++ can also be thought of as routines. You can apply many of the techniques for creatinga high-quality routine to these variants.
+
+非正式译文：何谓“routine”？routine 是具有单一目的、能单独调用的一段代码（method 或 procedure）。例如，C++ 中的函数 (function)，Java 中的 method，Microsoft Visual Basic 中的 function 或 sub。某些情况下，C/C++ 中的宏 (macro) 也可以认为是 routine。

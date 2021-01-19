@@ -1,0 +1,53 @@
+3.1.1 进程
+* 进程是执行中的程序。
+
+* 一个程序load到内存中就变成了进程，进程在内存中的内容：
+	1 代码段。
+	2 当前活动（current activity），包括cpu寄存器中的内容还有程序计数器（program counter）中的内容。
+	3 栈，包括了临时数据，像是函数参数，返回值，局部变量
+	4 数据段，包含全局变量
+	5 堆，程序运行中动态分配的内存
+
+3.2.2 调度器
+
+* 调度器选择进程执行
+* 批处理系统，进程可以长时间使用cpu。分时系统中，进程按时间片执行。
+* 在批处理系统(batch system)中，长期调度器负责从硬盘中load进程到内存中,The long-term scheduler controls the degree of multiprogramming (the number of processes in memory),If the degree of multiprogramming is stable, then the average rate of process creation must be equal to the average departure rate of processes leaving the system. Thus, the long-term scheduler may need to be invoked only when a process leaves the system.一个进程离开，长期调度器才load另一个进程到内存中等待执行。内存中进程的类型很重要，如果进程都是IO密集型进程，那么短期调度器就会很闲，如果进程都是CPU密集型进程，那么IO设备将会很闲，使系统变得不平衡。长期调度器需要选择合适数量的cpu密集型（cpu-bound）进程和IO密集型(IO-bound)进程，在一些分时系统中例如unix和windows中没有长期调度器的存在。新创建的进程会直接放在内存中。
+
+* 一些操作系统，例如分时系统，会有中期调度器，它负责移除在内存中或cpu分配中的进程，这个动作成为交换，把内存中的进程移除到磁盘中之后又可以
+从磁盘中再load到内存中，正在执行的进程
+
+* 短期调度器从就绪队列中选择进程给其分配cpu执行
+
+3.2.3 上下文切换
+
+* 当一个中断产生时，会导致操作系统把cpu的执行权从当前任务转交给内核。当中断产生时系统需要保存当前正在执行进程的上下文。上下文保存在PCB中，其中包括CPU寄存器的值，进程状态，内存管理的信息。切换cpu到另一个进程需要保存当前进程的上下文，并且restore另一个进程的上下文。这个动作叫做上下文切换。When a context switch occurs, the kernel saves the context of the old process in its PCB and loads the saved context of the new process scheduled to run.
+
+3.3 进程操作
+
+3.3.1 创建进程
+一个进程在执行的时候可以通过系统调用创建新的进程。0号进程是调度进程，0号进程创建1号进程和负责文件系统管理和内存管理的进程，1号进程是init进程。1号进程是所有用户进程的父进程。
+
+*1号进程是所有用户进程的父进程原因:
+dtlogin是init进程创建的，dtlogin is the process representing a user login screen. When a user logs in, dtlogin creates an X-windows session(Xsession), which in turns creates the sdt shel process. Below sdt shel, a user’s command-line shell— the C-shell or csh—is created. In this command line interface, the user can then invoke various child processes, such as the ls and cat commands
+
+* 通常来说进程需要资源（cpu、内存、文件、IO设备）来完成他的任务，子进程可以直接从操作系统获取资源，或者被约束从父进程的资源中获取资源。
+
+* 一个进程创建一个子进程，子进程的内存地址空间有两种可能性
+1 子进程的内存地址空间和父进程的地址空间一样，代码段，栈，堆，数据段，当前活动
+2 子进程load另一个程序执行。2 子进程load另一个程序执行。
+
+3.3.2 进程终止
+一个进程在执行完最后一个指令后会终止，并会调用exit让操作系统删除自己，进程终止会向父进程发一个状态值。All the resources of the process—including physical and virtual memory, open files, and I/O buffers—are deallocated by the operating system.
+除了执行完指令进程终止，父进程可以通过调用系统调用使子进程终止
+父进程终止，操作系统不允许子进程继续运行。（好像是在一些特殊的系统中是这样的，书上写的是VMS）
+父进程终止，子进程会把父进程设置为init进程，这时init进程负责回收子进程的资源
+
+3.4 进程间通信
+*进程间通信有两个模型
+1 共享内存 通过系统调用创建一个内存共享区，多个进程可以一起访问这块区域达到通信的效果，特点是速度快，通常共享内存区reside in 创建共享内存的进程的地址空间中
+2 消息传递 消息传递通常使用邮箱来进行，一个进程可以创建邮箱，可以从邮箱读取信息，发送信息到一个邮箱
+
+3.4.2.2 同步
+同步是阻塞的，调用一个同步的函数调用，这个进程会进入阻塞状态，直到函数返回。异步是非阻塞的
+The solution to the producer–consumer problem becomes trivial when we use blocking send() and receive() statements.The producer merely invokes the blocking send() call and waits until themessage is delivered to either the receiver or the mailbox. Likewise, when the consumer invokes receive(), it blocks until a message is available

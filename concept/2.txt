@@ -1,0 +1,5 @@
+2.2.1 shell是一种命令解释程序,命令解释程序主要用于执行用户命令,命令解释程序在执行一个命令的时候会先找到这个命令所在位置然后执行它。
+2.3 系统调用
+	POSIX提供的是API，unix、linux提供函数的是系统调用，这两者还是有区别的
+2.4.1 进程控制
+Quite often, two or more processes may share data. To ensure the integrity of the data being shared, operating systems often provide system calls allowing a process to lock shared data, thus preventing another process from accessing the data while it is locked.
