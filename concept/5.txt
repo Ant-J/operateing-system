@@ -1,0 +1,22 @@
+1* 内存管理的方法有多种，有基于硬件的方式，有页/段管理机制。选择内存管理的方式取决于很多因素，尤其是系统硬件的设计。正如后续我们将看到的
+很多的算法都需要硬件的支持
+
+7.1 背景
+1* cpu根据pc的值从内存中读取指令，cpu只能从寄存器或主存中读取数据，因此数据必须要被移动到内存中才能被cpu操作
+
+2* 需要保护用户进程无法访问操作系统的内存以及访问其他用户进程的内存，这种保护应该由硬件来提供。提供两个寄存器base和limit来指明一个进程的
+合法内存范围。
+
+3* 源码中的地址叫做符号地址，编译器会把符号地址转换成可重定向地址（A compiler will typically bind these symbolic addresses to relocatable
+addresses (such as “14 bytes from the beginning of this module”).），连接器会把可重定向地址转换成绝对地址。The linkage editor or loader will in turn bind the relocatable addresses to absolute addresses(such as 74014).
+
+数据或指令到内存地址的绑定可以是以下几种方式（应该是物理地址的绑定）
+1 编译时期：如果在编译时期就能确定进程在内存中的地址，那么绝对代码就会被生成。For example, if you know that a user process will reside starting at location R, then the generated compiler code will start at that location and extend up from there. If, at some later time, the starting location changes, then it will be necessary to recompile this code. The MS-DOS .COM-format programs are bound at compile time.
+2 load时期，在load的时候可以确定进程的起始地址
+3 执行时期，大多数系统使用的是这种方式，因为进程在执行的时候可能会从内存转到磁盘中，因此进程的物理内存的位置需要在进程执行的时候才能确定下来。
+
+7.1.3 逻辑地址空间&物理地址空间
+编译时期和load时期所产生的逻辑地址是和物理地址是相同的，执行时期产生的逻辑地址和物理地址是不同的。执行时期的逻辑地址到物理地址的转换的由mmu完成的。
+
+
+ 

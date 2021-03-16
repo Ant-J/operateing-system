@@ -51,3 +51,6 @@ dtlogin是init进程创建的，dtlogin is the process representing a user login
 3.4.2.2 同步
 同步是阻塞的，调用一个同步的函数调用，这个进程会进入阻塞状态，直到函数返回。异步是非阻塞的
 The solution to the producer–consumer problem becomes trivial when we use blocking send() and receive() statements.The producer merely invokes the blocking send() call and waits until themessage is delivered to either the receiver or the mailbox. Likewise, when the consumer invokes receive(), it blocks until a message is available
+
+3.6.2 RPC
+RPC机制是使用消息传递机制来实现通信。每一个消息都有接收方系统rpc守护进程的地址和要执行的函数以及参数。函数执行完的结果会以一个独立消息返回给调用者

@@ -1,3 +1,12 @@
+1.操作系统作用
+	manages the computer hardware
+	操作系统有不同的设计思路，一些操作系统被设计成高效的利用硬件，一些操作系统被设计成使用户很方便的系统（方便工作，学习，玩游戏）
+1.2.1 Computer-System Operation
+	计算机系统由cpu、通过总线连接的设备控制器组成。每种设备控制器( device controller)负责一种特定的设备
+	计算机启动需要引导程序，引导程序存在计算机硬件的固件（firmware）中，通常是ROM中。It initializes all aspects of the system, from CPU registers to device controllers to memory contents。 To accomplish this goal, the bootstrap program must locate and load into memory the operating system kernel. The operating system then starts executing the first process,such as “init,” and waits for some event to occur.
+1.2.3 I/O Structure
+	设备控制器维持着本地缓存和一组寄存器，设备控制器可以连接多个设备，设备控制器负责在他控制的设备和本地缓存之间移动数据。
+	一次IO操作：设备驱动在设备控制器中加载寄存器，设备控制器根据寄存器中的内容来确定做什么操作，比如是一个从键盘读取数据的操作。设备控制器开始把数据从设备读到自己的缓存中，然后通过中断通知设备驱动程序，设备驱动程序将控制权转给操作系统
 1. BIOS初始化cpu寄存器，内存，加载操作系统内核，操作系统内核启动完之后等待事件（中断，系统调用，异常）的发生
 
 
